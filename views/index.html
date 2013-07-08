@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="/javascripts/leaflet-0.6.2.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/javascripts/L.BuildingsLayer.js"></script>
+        <script type="text/javascript">
+            var socket = io.connect('http://localhost');
+        </script>
+        
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+        
+        <link rel="stylesheet" href="/stylesheets/Control.FullScreen.css" />
+        <script src="/javascripts/Control.FullScreen.js"></script>
+        
+        <style type="text/css">
+            #map { height: 180px; };
+        </style>
+ 
+        <p>C.E.S.T.</p>
+    </head>
+    <body>
+        <div id="map" style="width: 600px; height: 400px"></div>
+        <script type="text/javascript">
+            
+
+            //1 = local
+            //2 = remote
+            //3 = osm example
+            
+            var config = 1;
+            
+            if(config ==1){
+                var map = L.map('map').setView([38.83, -77.305], 15);
+                L.tileLayer('mapfiles/998/256/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    minZoom: 15,
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+                }).addTo(map);
+            } else if(config == 2){
+                var map = L.map('map').setView([38.83, -77.305], 15);
+                L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/998/256/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+                }).addTo(map);
+            } else if(config ==3){
+                var map = new L.Map('map').setView([52.52020, 13.37570], 17);
+                new L.TileLayer(
+                    'http://{s}.tiles.mapbox.com/v3/osmbuildings.map-c8zdox7m/{z}/{x}/{y}.png',
+                    { attribution: 'Map tiles © MapBox', maxZoom: 17 }
+                ).addTo(map);
+            }
+            
+            
+            
+            if(config ==1){
+                var data = {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [[
+                                [-77.306840, 38.835057],
+                                [-77.305172, 38.835220],
+                                [-77.305005, 38.834346],
+                                [-77.306658, 38.834192],
+                                [-77.306840, 38.835057]
+                            ]]
+                        },
+                        "properties": {
+                            "wallColor": "rgb(255,0,0)",
+                            "height": 100
+                        }
+                    }]
+                };
+                
+            } else if (config ==3){
+                var data = {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [[
+                                [13.37356, 52.52064],
+                                [13.37350, 52.51971],
+                                [13.37664, 52.51973],
+                                [13.37594, 52.52062],
+                                [13.37356, 52.52064]
+                            ]]
+                        },
+                        "properties": {
+                            "wallColor": "rgb(255,0,0)",
+                            "height": 500
+                        }
+                    }]
+                };
+            }
+            
+            var fullScreen = new L.Control.FullScreen(); 
+            map.addControl(fullScreen);
+
+            new L.BuildingsLayer().addTo(map).geoJSON(data);
+            
+        </script>
+    </body>
+</html>
+        
+  
