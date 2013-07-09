@@ -4,11 +4,11 @@ CRXXI Equipment Status Tool
 
 1) Clone 
 
-2)
-    On Windows:
+2) 
+
+On Windows:
         node run.js
-        
-    On Linux:
+On Linux:
         npm install
         node public/mapfiles/download_urls.js
 
