@@ -3,10 +3,21 @@
  * Module dependencies.
  */
 
-var express     =   require('express')
-  , http        =   require('http')
-  , path        =   require('path')
-  , io          =   require('socket.io');
+try{
+    console.log('hey');
+    var express     =   require('express')
+      , http        =   require('http')
+      , path        =   require('path')
+      , io          =   require('socket.io');
+} catch (err)
+{
+    console.log('hey');
+}
+
+process.on('uncaughtException', function (err) {
+  console.error(err);
+  console.log("Node NOT Exiting...");
+});
 
   
 var users = [];
