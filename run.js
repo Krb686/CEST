@@ -53,7 +53,7 @@ function installModules(callback){
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
 
-    process.stdin.on('data', function(chunk) {
+    process.stdin.once('data', function(chunk) {
         var choice = chunk.toString().trim();
         if(choice == "y")
         {
@@ -66,14 +66,13 @@ function installModules(callback){
         }
     });
 
-    process.stdin.on('end', function() {
+    process.stdin.once('close', function() {
         process.stdout.write('end');
     });
 }
 
 function checkMapFiles(callback)
 {
-    
     var path = __dirname + "\\public\\mapfiles\\998\\";
     mapFilesExist = fs.existsSync(path);
     
@@ -95,7 +94,7 @@ function downloadMapFiles(callback)
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
 
-    process.stdin.on('data', function(chunk) {
+    process.stdin.once('data', function(chunk) {
         var choice = chunk.toString().trim();
         if(choice == "y")
         {
@@ -108,7 +107,7 @@ function downloadMapFiles(callback)
         } 
     });
 
-    process.stdin.on('end', function() {
+    process.stdin.once('end', function() {
       process.stdout.write('end');
     });
 }
@@ -123,8 +122,10 @@ function startApp()
 function runCommandWindows(options, exitFunction)
 {
     var spawn = require('child_process').spawn;
-    var child = spawn('c:\\windows\\system32\\cmd.exe', options);
+    var child = spawn('c:\\windows\\system32\\cmd.exe', options, {"stdio": [process.stdin, process.stdout, process.stderr]});
 
+    
+    /*
     child.stdout.on('data', function (data) {
       console.log('stdout: ' + data);
     });
@@ -133,11 +134,16 @@ function runCommandWindows(options, exitFunction)
       console.log('stderr: ' + data);
     });
 
-    child.on('close', function (code) {
-      console.log('child process exited with code ' + code);
+    */
+    
+    child.on('exit', function (code) {
+      console.log('child process ' + child.pid + ' exited with code ' + code);
       exitFunction();
     });
+    
 }
+
+
 
 main();
 
