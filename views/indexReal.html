@@ -5,8 +5,11 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="/javascripts/L.BuildingsLayer.js"></script>
         <script src="/javascripts/Control.FullScreen.js"></script>
+        <script src="/javascripts/leaflet.markercluster.js"></script>
         <script src="/javascripts/Leaflet.Coordinates-0.1.3.min.js"></script>
-        <script type ="text/javascript" src="/javascripts/jquery-1.4.2.js"></script>
+        <script type ="text/javascript" src="/javascripts/jquery-1.10.2.js"></script>
+        <script type = "text/javascript" src="/javascripts/OSMBuildings-Leaflet.js"></script>
+        <script type = "text/javascript" src="/data/buildingData.json"></script>
         <!--<script type="text/javascript" src="/javascripts/jquery-migrate-1.2.1.js"></script>-->
         <!--<script src="/javascripts/readymap-debug-0.0.1.js"></script>-->
         <!--<script src="/javascripts/L.Control.Zoomslider.js"></script>-->
@@ -17,6 +20,7 @@
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
         <link rel="stylesheet" href="/stylesheets/Leaflet.Coordinates-0.1.3.css" />
         <link rel="stylesheet" href="/stylesheets/Control.FullScreen.css" />
+        <link rel="stylesheet" href="/stylesheets/MarkerCluster.css" />
         <!--<link rel="stylesheet" href="/stylesheets/readymap.css" />-->
         <!--<link rel="stylesheet" href="/stylesheets/L.Control.Zoomslider.css" />-->
         
@@ -25,8 +29,8 @@
             #map { height: 180px; };
         </style>
  
-        <div id="banner" style="width: 100%;height: 81px">
-            <img src="/images/TopBanFnlGradient.jpg">
+        <div id="banner" style="width: 100%;height: 81px" align="middle">
+            <img src="/images/cest_logo.png">
         </div>
     </head>
     <body>
@@ -61,31 +65,30 @@
                 ).addTo(map);
             }
             
+            //Fullscreen control
+            L.control.fullscreen({
+              position: 'topleft',
+              title: 'Show me the fullscreen !'
+            }).addTo(map);
+            
+            //Coordinates control
+            L.control.coordinates({
+                position:"bottomleft", //optional default "bootomright"
+                decimals:5, //optional default 4
+                decimalSeperator:".", //optional default "."
+                labelTemplateLat:"Latitude: {y}", //optional default "Lat: {y}"
+                labelTemplateLng:"Longitude: {x}", //optional default "Lng: {x}"
+                enableUserInput:true, //optional default true
+                useDMS:false, //optional default false
+                useLatLngOrder: true //ordering of labels, default false-> lng-lat
+            }).addTo(map);
+            
             
             
             
             
             if(config ==1){
-                var data = {
-                    "type": "FeatureCollection",
-                    "features": [{
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [[
-                                [-77.306840, 38.835057],
-                                [-77.305172, 38.835220],
-                                [-77.305005, 38.834346],
-                                [-77.306658, 38.834192],
-                                [-77.306840, 38.835057]
-                            ]]
-                        },
-                        "properties": {
-                            "wallColor": "rgb(255,0,0)",
-                            "height": 100
-                        }
-                    }]
-                };
+                new OSMBuildings(map).setData(buildingData);
                 
             } else if (config ==3){
                 var data = {
@@ -110,27 +113,19 @@
                 };
             }
             
-            //Fullscreen control
-            L.control.fullscreen({
-              position: 'topleft',
-              title: 'Show me the fullscreen !'
-            }).addTo(map);
-            
-            //Coordinates control
-            L.control.coordinates({
-                position:"bottomleft", //optional default "bootomright"
-                decimals:5, //optional default 4
-                decimalSeperator:".", //optional default "."
-                labelTemplateLat:"Latitude: {y}", //optional default "Lat: {y}"
-                labelTemplateLng:"Longitude: {x}", //optional default "Lng: {x}"
-                enableUserInput:true, //optional default true
-                useDMS:false, //optional default false
-                useLatLngOrder: true //ordering of labels, default false-> lng-lat
-            }).addTo(map);
             
             
-            //OSM plugin
-            new L.BuildingsLayer().addTo(map).geoJSON(data);
+            
+            //Marker cluster
+            var markers = new L.MarkerClusterGroup();
+            var newMarker = new L.Marker([38.82831, -77.30757]);
+            newMarker.bindPopup("hey");
+            markers.addLayer(newMarker);
+            map.addLayer(markers);
+            
+            
+            
+             
             
             
         </script>
