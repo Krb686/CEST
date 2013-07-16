@@ -110,7 +110,7 @@ function downloadMapFiles(callback)
             if(platform == "win32"){
                 runCommandWindows([__dirname, 'node', 'public\\mapfiles\\download_urls.js'], callback);
             } else if (platform == "linux"){
-                runCommandLinux([__dirname, 'node', 'public\\mapfiles\\download_urls.js'], callback);
+                runCommandLinux([__dirname, 'node', 'public/mapfiles/download_urls.js'], callback);
             } else {
                 console.log("Platform: " + platform + " is not supported.");
             }
@@ -159,12 +159,14 @@ function runCommandLinux(options, exitFunction)
     var spawn = require('child_process').spawn;
    
     //Create child process with shared stdin, stdout, and stderr
-    var child = spawn(options[1], options[2], {"stdio": [process.stdin, process.stdout, process.stderr]});
+    
+    var child = spawn(options[1], [options[2]], {"stdio": [process.stdin, process.stdout, process.stderr]});
    
     child.on('exit', function (code) {
         console.log('child process ' + child.pid + ' exited with code ' + code);
         exitFunction();
     });
+    
 
 }
 
