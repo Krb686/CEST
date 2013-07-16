@@ -26,7 +26,11 @@ function checkModules(callback){
     
     for(var module in package_json_object.dependencies)
     {
-        var path = __dirname + "\\node_modules\\" + module + "\\";
+        if(platform == "win32"){
+            var path = __dirname + "\\node_modules\\" + module + "\\";
+        } else if (platform == "linux"){
+            var path = __dirname + "/node_modules/" + module + "/";
+        }
         var exists = fs.existsSync(path);
         
         if(!exists){
@@ -81,7 +85,11 @@ function installModules(callback){
 
 function checkMapFiles(callback)
 {
-    var path = __dirname + "\\public\\mapfiles\\998\\";
+    if(platform == "win32"){
+        var path = __dirname + "\\public\\mapfiles\\998\\";
+    } else if(platform == "linux"){
+        var path = __dirname + "/public/mapfiles/998/";
+    }
     mapFilesExist = fs.existsSync(path);
     
     if(!mapFilesExist)
