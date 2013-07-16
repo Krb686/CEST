@@ -1,10 +1,19 @@
+var os = require('os');
 var fs = require('fs');
 var http = require('http');
 var mkdirp = require('mkdirp');
 
+var platform = os.platform();
 
-var urlPath = __dirname + "\\urls.txt";
-var savePath = __dirname + "\\";
+if(platform == "win32"){
+    var urlPath = __dirname + "\\urls.txt";
+    var savePath = __dirname + "\\";
+} else if (platform == "linux"){
+    var urlPath = __dirname + "/urls.txt";
+    var savePath = __dirname + "/";
+}
+
+
 var objects = [];
 var total = 0;
 var numDownloaded = 0;
@@ -53,8 +62,11 @@ else
             fileName = fileName.replace(/(\r\n|\n|\r)/gm,"");
         }
         
-        var subPath = STYLE + "\\" + RESOLUTION + "\\" + ZOOM + "\\" + X + "\\";
-        
+        if(platform == "win32"){
+            var subPath = STYLE + "\\" + RESOLUTION + "\\" + ZOOM + "\\" + X + "\\";
+        } else if (platform == "linux"){
+            var subPath = STYLE + "/" + RESOLUTION + "/" + ZOOM + "/" + X + "/";
+        }
         var totalPath = savePath + subPath;
         
         if (!fs.existsSync(totalPath))
