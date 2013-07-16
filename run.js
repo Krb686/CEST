@@ -65,7 +65,7 @@ function installModules(callback){
         {
             //npm install
             if(platform == "win32"){
-                runCommandWindows([__dirname, 'npm', 'install'], callback);
+                runCommandWindows(['/c', 'npm', 'install'], callback);
             } else if (platform == "linux"){
                 runCommandLinux([__dirname, 'npm', 'install'], callback);
             } else {
@@ -116,7 +116,7 @@ function downloadMapFiles(callback)
         {
             //download map files
             if(platform == "win32"){
-                runCommandWindows([__dirname, 'node', 'public\\mapfiles\\download_urls.js'], callback);
+                runCommandWindows(['/c', 'node', 'public\\mapfiles\\download_urls.js'], callback);
             } else if (platform == "linux"){
                 runCommandLinux([__dirname, 'node', 'public/mapfiles/download_urls.js'], callback);
             } else {
@@ -139,7 +139,7 @@ function startApp()
 {
     console.log("Starting app...");
     if(platform == "win32"){
-        runCommandWindows([__dirname, 'node', 'app.js']);
+        runCommandWindows(['/c', 'node', 'app.js']);
     } else if (platform == "linux"){
         runCommandLinux([__dirname, 'node', 'app.js']);
     } else {
