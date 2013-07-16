@@ -27,7 +27,7 @@ else
         mkdirp.sync(savePath);
     }
     
-    var data = fs.readFileSync(urlPath, {"encoding":"utf8"});
+    var data = fs.readFileSync(urlPath, "utf8");
 
     //process.stdout.write("File read!");
     var array = data.split("\n");

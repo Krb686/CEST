@@ -3,7 +3,7 @@ var childProcess = require('child_process');
 
 
 //GLOBALS
-var package_json_string = fs.readFileSync("package.json", {encoding:"utf-8"});
+var package_json_string = fs.readFileSync("package.json", "utf8");
 var package_json_object = JSON.parse(package_json_string);
 var numDependencies = Object.keys(package_json_object.dependencies).length;
     
