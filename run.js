@@ -1,3 +1,4 @@
+var os = require('os');
 var fs = require('fs');
 var childProcess = require('child_process');
 
@@ -9,6 +10,7 @@ var numDependencies = Object.keys(package_json_object.dependencies).length;
     
 var dependenciesExist = true;
 var mapFilesExist = true;
+var platform = os.platform();
 
 function main()
 {
@@ -58,7 +60,13 @@ function installModules(callback){
         if(choice == "y")
         {
             //npm install
-            runCommandWindows(['/c', 'npm', 'install'], callback);
+            if(platform == "win32"){
+                runCommandWindows([__dirname, 'npm', 'install'], callback);
+            } else if (platform == "linux"){
+                runCommandLinux([__dirname, 'npm', 'install'], callback);
+            } else {
+                console.log("Platform: " + platform + " is not supported.");
+            }
             
         } else {
             console.log("Exiting...");
@@ -99,7 +107,13 @@ function downloadMapFiles(callback)
         if(choice == "y")
         {
             //download map files
-            runCommandWindows(['/c', 'node', 'public\\mapfiles\\download_urls.js'], callback);
+            if(platform == "win32"){
+                runCommandWindows([__dirname, 'node', 'public\\mapfiles\\download_urls.js'], callback);
+            } else if (platform == "linux"){
+                runCommandLinux([__dirname, 'node', 'public\\mapfiles\\download_urls.js'], callback);
+            } else {
+                console.log("Platform: " + platform + " is not supported.");
+            }
             
         } else {
             console.log("Exiting...");
@@ -116,31 +130,42 @@ function downloadMapFiles(callback)
 function startApp()
 {
     console.log("Starting app...");
-    runCommandWindows(['/c', 'node', 'app.js']);
+    if(platform == "win32"){
+        runCommandWindows([__dirname, 'node', 'app.js']);
+    } else if (platform == "linux"){
+        runCommandLinux([__dirname, 'node', 'app.js']);
+    } else {
+        console.log("Platform: " + platform + " is not supported.");
+    }
 }
 
 function runCommandWindows(options, exitFunction)
 {
     var spawn = require('child_process').spawn;
+    
+    //Create child process with shared stdin, stdout, and stderr
     var child = spawn('c:\\windows\\system32\\cmd.exe', options, {"stdio": [process.stdin, process.stdout, process.stderr]});
 
     
-    /*
-    child.stdout.on('data', function (data) {
-      console.log('stdout: ' + data);
-    });
-
-    child.stderr.on('data', function (data) {
-      console.log('stderr: ' + data);
-    });
-
-    */
-    
     child.on('exit', function (code) {
-      console.log('child process ' + child.pid + ' exited with code ' + code);
-      exitFunction();
+        console.log('child process ' + child.pid + ' exited with code ' + code);
+        exitFunction();
     });
     
+}
+
+function runCommandLinux(options, exitFunction)
+{
+    var spawn = require('child_process').spawn;
+   
+    //Create child process with shared stdin, stdout, and stderr
+    var child = spawn(options[1], options[2], {"stdio": [process.stdin, process.stdout, process.stderr]});
+   
+    child.on('exit', function (code) {
+        console.log('child process ' + child.pid + ' exited with code ' + code);
+        exitFunction();
+    });
+
 }
 
 
