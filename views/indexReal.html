@@ -11,7 +11,8 @@
         <script type = "text/javascript" src="/javascripts/OSMBuildings-Leaflet.js"></script>
         <script type = "text/javascript" src="/data/buildingData.json"></script>
         <script type = "text/javascript" src="/javascripts/three.js"></script>
-        <script type ="text/javascript" src="/javascripts/leaflet-search.js"></script>
+        <script type ="text/javascript" src="/javascripts/leaflet-search2.js"></script>
+        <script type ="text/javascript" src="/javascripts/leaflet.awesome-markers.js"></script>
         <!--<script type="text/javascript" src="/javascripts/jquery-migrate-1.2.1.js"></script>-->
         <!--<script src="/javascripts/readymap-debug-0.0.1.js"></script>-->
         <!--<script src="/javascripts/L.Control.Zoomslider.js"></script>-->
@@ -19,11 +20,17 @@
             var socket = io.connect('http://localhost');
         </script>
         
+         
+        
+        
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
         <link rel="stylesheet" href="/stylesheets/Leaflet.Coordinates-0.1.3.css" />
         <link rel="stylesheet" href="/stylesheets/Control.FullScreen.css" />
         <link rel="stylesheet" href="/stylesheets/MarkerCluster.css" />
+        <link rel="stylesheet" href="/stylesheets/MarkerCluster.Default.css" />
         <link rel="stylesheet" href="/stylesheets/leaflet-search.css" />
+        <link rel="stylesheet" href="/stylesheets/leaflet.awesome-markers.css" />
+        <link rel="stylesheet" href="/stylesheets/font-awesome.css" />
         <!--<link rel="stylesheet" href="/stylesheets/readymap.css" />-->
         <!--<link rel="stylesheet" href="/stylesheets/L.Control.Zoomslider.css" />-->
         
@@ -98,10 +105,9 @@
             
             
             
-            
             if(config ==1){
-                //new OSMBuildings(map).setData(buildingData);
-                new OSMBuildings(map).loadData();
+                new OSMBuildings(map).setData(buildingData);
+                //new OSMBuildings(map).loadData();
                 
             } else if (config ==3){
                 var data = {
@@ -131,10 +137,66 @@
             
             //Marker cluster
             var markers = new L.MarkerClusterGroup();
-            var newMarker = new L.Marker([38.82831, -77.30757]);
+            //for(i=0;i<25;i++){
+            
+            var darkBlueLaptopMarker = L.AwesomeMarkers.icon({
+                icon: 'icon-camera',
+                color: 'darkblue'
+            });
+            
+            var darkRedDesktopMarker = L.AwesomeMarkers.icon({
+                icon: 'icon-desktop',
+                color: 'darkred'
+            });
+            
+            var darkPurpleSuitcaseMarker = L.AwesomeMarkers.icon({
+                icon: 'icon-suitcase',
+                color: 'darkpurple'
+            });
+            
+            
+            
+            
+            //blue laptop
+            var newMarker = new L.Marker([38.82831, -77.30757], {icon:darkBlueLaptopMarker});
             newMarker.bindPopup("hey");
             markers.addLayer(newMarker);
+            
+            var newMarker = new L.Marker([38.82833, -77.30757], {icon:darkBlueLaptopMarker});
+            newMarker.bindPopup("hey");
+            markers.addLayer(newMarker);
+            
+            var newMarker = new L.Marker([38.82835, -77.30757], {icon:darkBlueLaptopMarker});
+            newMarker.bindPopup("hey");
+            markers.addLayer(newMarker);
+            
+            var newMarker = new L.Marker([38.82837, -77.30757], {icon:darkBlueLaptopMarker});
+            newMarker.bindPopup("hey");
+            markers.addLayer(newMarker);
+            
+            //red desktop
+            var newMarker = new L.Marker([38.828405, -77.307624], {icon:darkRedDesktopMarker});
+            newMarker.bindPopup("hey");
+            markers.addLayer(newMarker);
+            
+            var newMarker = new L.Marker([38.82864, -77.30740], {icon:darkRedDesktopMarker});
+            newMarker.bindPopup("hey");
+            markers.addLayer(newMarker);
+            
+            var newMarker = new L.Marker([38.82864, -77.30740], {icon:darkRedDesktopMarker});
+            newMarker.bindPopup("hey");
+            markers.addLayer(newMarker);
+            
+            
+            //purple suitcase
+            var newMarker = new L.Marker([38.82860, -77.30714], {icon:darkPurpleSuitcaseMarker});
+            newMarker.bindPopup("<div id='tabs' style='height:239px;width:452px;'><img src='/images/popup.png'> </div>");
+            markers.addLayer(newMarker);
+            
+            
+            
             map.addLayer(markers);
+            
             
             
             
@@ -145,7 +207,7 @@
             //var markersLayer = new L.LayerGroup();	//layer contain searched elements
             //map.addLayer(markersLayer);
             //leaflet-search
-            map.addControl( new L.Control.Search({layer: featuresLayer, propertyName: "name", animateLocation:false, markerLocation:true}) );
+            map.addControl( new L.Control.Search({layer: featuresLayer, propertyName: "name", animateLocation:false, markerLocation:false}) );
             
             /*
             function setup3d()
