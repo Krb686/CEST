@@ -16,6 +16,7 @@ if(platform == "win32"){
 
 var objects = [];
 var total = 0;
+var badCount = 0;
 var numDownloaded = 0;
 
 process.on('uncaughtException', function (err) {
@@ -76,27 +77,61 @@ else
            
         }
         
-        var fileStream = fs.createWriteStream(totalPath + fileName);
+        //Check if file already exists
+        if(!fs.existsSync(totalPath + fileName)){
         
-        var downloadObject = {
-                url:url,
-                fileStream:fileStream
+            var fileStream = fs.createWriteStream(totalPath + fileName);
+        
+            var downloadObject = {
+                    url:url,
+                    fileStream:fileStream
+            }
+        
+            downloadObject.fileStream.on('end', function(){
+                downloadObject.fileStream.end();
+            });
+            
+            objects.push(downloadObject);
+            
+        } else {
+            var stats = fs.statSync(totalPath + fileName);
+            //Redownload bad files - only checking whether bad based on file size > 0
+            if(stats.size == 0){
+                badCount++;
+                console.log(totalPath + fileName + ' is bad');
+                
+                var fileStream = fs.createWriteStream(totalPath + fileName);
+        
+                var downloadObject = {
+                        url:url,
+                        fileStream:fileStream
+                }
+                
+                console.log(url);
+        
+                downloadObject.fileStream.on('end', function(){
+                    downloadObject.fileStream.end();
+                });
+            
+                objects.push(downloadObject);
+                }
         }
         
-        downloadObject.fileStream.on('end', function(){
-            downloadObject.fileStream.end();
-        });
-            
-        objects.push(downloadObject);
-        //console.log(objects.length);
     }
+    
     total = objects.length;
-    download(objects.shift());
+    console.log(badCount + ' bad files!');
+    console.log(total + ' files to download total!');
+    if(total > 0){
+        download(objects.shift());
+    } else {
+        console.log('All files already exist!');
+        
+    }
 }
 
 function download(object)
 {
-    
     http.get(object.url, function(response){
         numDownloaded++;
         console.log('Downloaded file ' + numDownloaded + '//' + total);

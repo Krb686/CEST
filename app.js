@@ -18,7 +18,7 @@ function configureServer()
     var app = express();
 
     app.configure(function(){
-      app.set('port', process.env.PORT || 3000);
+      app.set('port', process.env.PORT || 3001);
       app.set('views', __dirname + '/views');
       app.set('view options', {layout:false});
       app.engine('html', require('ejs').renderFile);
