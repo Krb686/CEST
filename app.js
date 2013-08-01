@@ -35,7 +35,7 @@ function configureServer()
     });
     
     app.get('/', function(req, res){
-        res.render('indexReal.html');
+        res.render('index.html');
     });
     
     startServer(app);
