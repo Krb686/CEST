@@ -6,10 +6,13 @@
 var express     =   require('express')
   , http        =   require('http')
   , path        =   require('path')
-  , io          =   require('socket.io');
+  , io          =   require('socket.io')
+  , sys         =   require('sys')
+  , sqlite3      =   require('sqlite3').verbose();
 
 var users = [];
 var socketList = {};
+
   
 function configureServer()
 {
@@ -38,7 +41,12 @@ function configureServer()
         res.render('index.html');
     });
     
+    //Database sqlite
+    var db = new sqlite3.Database(__dirname + '/public/data/data.s3db');
+    
+    
     startServer(app);
+    loadDatabase(db);
 }
 
 function startServer(app)
@@ -71,6 +79,18 @@ function connectSocket(socket){
     
     socket.on('simulation', function(data){
        console.log(data); 
+    });
+}
+
+function loadDatabase(db){
+    db.serialize(function(){
+        db.all('select * from DEVICE', function(err, rows){
+            if(err){
+                throw err;
+            }
+            
+            console.log(rows[1]);
+        });
     });
 }
 
