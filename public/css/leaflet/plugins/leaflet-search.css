@@ -41,7 +41,7 @@
 	margin:2px 0 2px 2px;
 }
 .leaflet-control-search.search-load .search-input {
-	background: url('images/loader.gif') no-repeat center right #fff;
+	background: url('../../../images/loader.gif') no-repeat center right #fff;
 }
 .leaflet-control-search.search-load .search-cancel {
 	visibility:hidden;

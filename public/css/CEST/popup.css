@@ -1,3 +1,42 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+.wrapper {
+    display: table;
+    height: 100%;
+    width: 100%;
+    background: yellow;
+}
+.header {
+    display: table-row;
+    height:5%;
+    background-color: rgba(50,50,50,6);;
+    text-align:center;
+}
+.content {
+    display: table-row;  /* height is dynamic, and will expand... */
+    height: 100%;        /* ...as content is added (won't scroll) */
+    background: turquoise;
+    padding-right:10px;
+    margin-left:30px;
+    margin-right:30px;
+    border:10px;
+}
+.footer {
+    display: table-row;
+    height:20px;
+    background: lightgray;
+}
+
+#map{
+    height:100%;
+    width:100%;
+}
+
+
+
 .leaflet-popup-content-wrapper
 {
     
@@ -5,8 +44,8 @@
     background-repeat:no-repeat;
     background-size:100% 100%;
     box-sizing: border-box;
-    width:300px;
-    height:200px;
+    width:400px;
+    height:300px;
     
     -moz-box-sizing: border-box;
 }
@@ -19,8 +58,10 @@
     margin-left:5px;
     margin-right:30px;
     margin-top: 5px;
-    margin-bottom:5px;
+    margin-bottom:10px;
     background-image:'';
+    height: 95%;
+    width:100%;
 }
 
 
@@ -29,9 +70,10 @@
     background-color: rgba(255, 255, 255, 0.0);
     background-image: none;
     border: 0px;
-    min-height:170px;
-    max-height:250px;
-    max-width:259px;
+    height:100%;
+    padding: 0px;
+    width:100%;
+    font-size: 0.9em;
 }
 
 .leaflet-container
@@ -39,4 +81,31 @@
     font: 18px, Georgia, serif;
 }
 
+#tabDevice{
+    padding:5px;
+    height:85%;
+    width:100%;
+    overflow:hidden;
+}
 
+.popupTable{
+    border:1;
+    height:100%;
+    max-height:300px;
+    width:100%;
+    overflow:scroll;
+}
+
+.tdImg{
+    text-align:center;
+    overflow:scroll;
+}
+
+.routerImage{
+    text-align:center;
+}
+
+
+.ui-tabs-nav.ui-helper-reset.ui-helper-clearfix.ui-widget-header.ui-corner-all{
+    margin-right:20px;
+}

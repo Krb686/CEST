@@ -18,13 +18,10 @@
         <script type = "text/javascript" src = "/js/leaflet/plugins/OSMBuildings-Leaflet.js"></script>
         <script type = "text/javascript" src = "/js/leaflet/plugins/leaflet-search.js"></script>
         <script type = "text/javascript" src = "/js/leaflet/plugins/leaflet.awesome-markers.js"></script>
-        <!-- Zoomslider currently unused due to hanging error when used in combination with markercluster-->
-        <!--<script type = "text/javascript" src = "/js/leaflet/plugins/L.Control.Zoomslider.js"></script>-->
+        <script type = "text/javascript" src = "/js/leaflet/plugins/L.Control.Zoomslider.js"></script>
         <!--jquery-->
         <script type = "text/javascript" src = "/js/jquery/jquery-1.10.2.js"></script>
         <script type = "text/javascript" src = "/js/jquery/jquery-ui.js"></script>
-        <!-- THREE.js -->
-        <script type = "text/javascript" src = "/js/THREE.js/three.js"></script>
         <!-- Other -->
         <script type = "text/javascript" src = "/data/buildingData.json"></script>
         <script type = "text/javascript" src = "/js/CEST/Device.js"></script>
@@ -40,40 +37,23 @@
         <link rel = "stylesheet" href = "/css/leaflet/plugins/leaflet-search.css" />
         <link rel = "stylesheet" href = "/css/leaflet/plugins/leaflet.awesome-markers.css" />
         <link rel = "stylesheet" href = "/css/leaflet/plugins/font-awesome.css" />
-        <!--<link rel = "stylesheet" href = "/css/leaflet/plugins/L.Control.Zoomslider.css" />-->
+        <link rel = "stylesheet" href = "/css/leaflet/plugins/L.Control.Zoomslider.css" />
         <link rel = "stylesheet" href = "/css/CEST/popup.css" />
-        
-        
-        
-        <style type="text/css">
-            #map { height: 180px; };
-        </style>
-        
-        <style>
-			#container {
-				background: #000;
-				width: 400px;
-				height: 300px;
-			}
-		</style>
- 
-        <div id="banner" style="width: 100%;height: 81px" align="middle">
-            <img src="/images/cest_logo.png">
-        </div>
-        
     </head>
     <body>
-        <div id="map" style="width: 100%; height: 750px;"></div>
-        <script type = "text/javascript" src = "/js/CEST/applet.js">
-            console.log('hey');
-       </script>
-       <script type = "text/javascript">
+        <div class="wrapper">
+            <div class="header">
+                <img src="/images/CEST_logo.png"/>
+            </div>
+            <div class="content">
+                <div id="map"></div>
+            </div>
+        </div>
+        <script type = "text/javascript" src = "/js/CEST/applet.js"></script>
+        <script type = "text/javascript">
             var cest = new CEST();
        </script>
-       
-        
     </body>
-    
 </html>
         
   
