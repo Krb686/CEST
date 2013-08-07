@@ -1,46 +1,58 @@
 function CEST(config){
+    
+    //private var
+    var _resources = {
+        icons: {
+        
+        
+        }
+    };
+    _resources.icons.routerIcon = L.AwesomeMarkers.icon({
+        icon: 'icon-bar-chart',
+        color: 'darkred'
+    });
+    
+    _resources.icons.tvIcon = L.AwesomeMarkers.icon({
+        icon: 'icon-desktop',
+        color: 'green'
+    });
+    
+    //privileged method
+    this.getResources = function(){
+        return _resources;
+    }
+    
     this.init(config);
 }
 
 CEST.prototype = {
     init: function(config){
         this.map = new L.map('map').setView([38.83, -77.305], 15);
-        this.devices = [];
-    
     
         config = config || {};
-        config.tileSource = config.tileSource || 'remote';
-        config.style = config.style || '998';
+        this.tileSource = config.tileSource || 'remote';
+        this.style = config.style || '998';
+        this.devices = config.devices || [];
         
-        if(config.tileSource == 'local'){
-            L.tileLayer('mapfiles/' + config.style +  '/256/{z}/{x}/{y}.png', {
+        
+        if(this.tileSource == 'local'){
+            L.tileLayer('mapfiles/' + this.style +  '/256/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 minZoom: 15,
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
             }).addTo(this.map);
-        } else if (config.tileSource == 'remote'){
-            L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/' + config.style + '/256/{z}/{x}/{y}.png', {
+        } else if (this.tileSource == 'remote'){
+            L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/' + this.style + '/256/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
             }).addTo(this.map);
         }
     
+        this.markers = new L.MarkerClusterGroup();
+        this.map.addLayer(this.markers);
         this.loadPlugins();
-        this.loadDevices();
         
-        //Setup jquery event listener to make tabs for popups
-        $(window).load(function() {
-            this.cest.map.on('popupopen', function() {
-                $( ".detail-popup-info" ).tabs();
-            });
-        });
-    
-    },
-    
-    loadDevices: function(){
-    
-        var deviceCount = 5;
-        var popupHTML = "<div class='detail-popup-info'>" + 
+        this.popupHTML = "<div class='detail-popup-info'>" + 
                             "<ul>" + 
                                 "<li>" + 
                                     "<a href='#tabDevice'>" + 
@@ -93,77 +105,14 @@ CEST.prototype = {
                                 "<p>Info</p>" + 
                             "</div>" +
                         "</div>";
-                                
+        
+        //Setup jquery event listener to make tabs for popups
+        $(window).load(function() {
+            this.cest.map.on('popupopen', function() {
+                $( ".detail-popup-info" ).tabs();
+            });
+        });
     
-        var device1 = {
-            'name': 'Cisco Wireless Router',
-            'type': 'Router',
-            'id' : '134de92c178',
-            'mfc' : 'Cisco',
-            'model' : 'E1000',
-            'properties': {
-                'ip' : '192.168.1.12',
-                'mac' : '22-DC-C4-92-4D-BE',
-                'status' : 'Good',
-                'location' : {
-                    'lat' : 38.82905,
-                    'lng' : -77.30622
-                }
-            }
-        };
-        
-        var device2 = {
-            'name': 'Cisco Wireless Router',
-            'type': 'Router',
-            'id' : '134de92c178',
-            'mfc' : 'Cisco',
-            'model' : 'E1000',
-            'properties': {
-                'ip' : '192.168.1.12',
-                'mac' : '22-DC-C4-92-4D-BE',
-                'status' : 'Good',
-                'location' : {
-                    'lat' : 38.82905,
-                    'lng' : -77.30632
-                }
-            }
-        };
-        
-       
-        this.devices.push(device1);
-        this.devices.push(device2);
-        
-        
-        this.markers = new L.MarkerClusterGroup();
-        for(var i=0;i<this.devices.length;i++){
-            var device = this.devices[i];
-            
-            if(device.type == 'Router'){
-                
-                
-                var routerIcon = L.AwesomeMarkers.icon({
-                    icon: 'icon-signal',
-                    color: 'darkred'
-                });
-                
-                var newMarker = new L.Marker([device.properties.location.lat, device.properties.location.lng], {icon:routerIcon});
-                var popup = L.popup({maxWidth:385}).setContent(popupHTML);
-                newMarker.bindPopup(popup);
-                this.markers.addLayer(newMarker);
-                
-                
-                /*
-                var marker = L.marker([38.83, -77.3]).addTo(this.map);
-                marker.bindPopup(popupHTML);
-                */
-                
-            }
-        }
-        
-        
-        this.map.addLayer(this.markers);
-    
-        
     },
     
     loadPlugins: function(){
@@ -190,7 +139,6 @@ CEST.prototype = {
         
         //OSM
         var osmBuildings = new OSMBuildings(this.map).setData(buildingData);
-        console.log(buildingData);
         var featuresLayer = L.geoJson(buildingData);
         featuresLayer.setStyle({stroke:false, fill:false});
         
@@ -201,12 +149,43 @@ CEST.prototype = {
     },
     sampleSearchControl: function(){
         var data = buildingData;
-        
-        var featuresLayer = new L.GeoJSON(data);
+        var testLayer = L.geoJson();
+        var featuresLayer = new L.geoJson(data);
         this.map.addLayer(featuresLayer);
         var searchControl = new L.Control.Search({layer: featuresLayer, propertyName: 'name', circleLocation:false});
         this.map.addControl( searchControl);
-    }    
+    }, 
+    update : function(){
+        //
+        //general purpose update
+    },
+    updateDevices: function(data){
+        for(var i=0;i<data.length;i++){
+            this.devices.push(data[i]);
+        }
+        
+        this.markDevices(data);
+    },
+    markDevices: function(data){
+        var resources = this.getResources();
+        
+        for(var i=0;i<data.length;i++){
+            var device = data[i];
+            
+            if(device.type == 'Router'){
+                var newMarker = new L.Marker([device.properties.location.lat, device.properties.location.lng], {icon:resources.icons.routerIcon});
+                var popup = L.popup({maxWidth:385}).setContent(this.popupHTML);
+                newMarker.bindPopup(popup);
+                this.markers.addLayer(newMarker);
+            } else if(device.type == 'Television'){
+                var newMarker = new L.Marker([device.properties.location.lat, device.properties.location.lng], {icon:resources.icons.tvIcon});
+                var popup = L.popup({maxWidth:385}).setContent(this.popupHTML);
+                newMarker.bindPopup(popup);
+                this.markers.addLayer(newMarker);
+            
+            }
+        } 
+    }
     
     
 }

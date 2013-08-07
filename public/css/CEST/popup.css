@@ -98,7 +98,7 @@ html, body {
 
 .tdImg{
     text-align:center;
-    overflow:scroll;
+    overflow:hidden;
 }
 
 .routerImage{

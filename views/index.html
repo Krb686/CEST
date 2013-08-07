@@ -7,6 +7,8 @@
         <script type = "text/javascript" src = "/socket.io/socket.io.js"></script>
         <script>
             var socket = io.connect('http://localhost');
+            
+            
         </script>
         <!-- Leaflet -->
         <script type = "text/javascript" src = "/js/leaflet/leaflet.js"></script>
@@ -52,6 +54,10 @@
         <script type = "text/javascript" src = "/js/CEST/applet.js"></script>
         <script type = "text/javascript">
             var cest = new CEST();
+            
+            socket.on('data', function(data){
+                cest.updateDevices(data);
+            });
        </script>
     </body>
 </html>
