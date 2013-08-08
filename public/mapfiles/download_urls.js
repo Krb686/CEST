@@ -51,11 +51,15 @@ else
     for (var i=0;i<array.length;i++)
     {
         var url = array[i];
+        //override
+        //url = url.replace('/998/', '/997/');
         var subArray = url.split("\/");
         
         if(subArray.length == 9)
         {
             var STYLE = subArray[4];
+            //override
+            //STYLE = 997;
             var RESOLUTION = subArray[5];
             var ZOOM = subArray[6];
             var X = subArray[7];

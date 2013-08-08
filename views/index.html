@@ -7,8 +7,6 @@
         <script type = "text/javascript" src = "/socket.io/socket.io.js"></script>
         <script>
             var socket = io.connect('http://localhost');
-            
-            
         </script>
         <!-- Leaflet -->
         <script type = "text/javascript" src = "/js/leaflet/leaflet.js"></script>
@@ -27,6 +25,17 @@
         <!-- Other -->
         <script type = "text/javascript" src = "/data/buildingData.json"></script>
         <script type = "text/javascript" src = "/js/CEST/Device.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel=stylesheet href="css/base.css"/>
+        <script src="js/Three.js"></script>
+        <script src="js/Detector.js"></script>
+        <script src="js/Stats.js"></script>
+        <script src="js/OrbitControls.js"></script>
+        <script src="js/THREEx.KeyboardState.js"></script>
+        <script src="js/THREEx.FullScreen.js"></script>
+        <script src="js/THREEx.WindowResize.js"></script>
+        <script type='text/javascript' src='js/dat.gui.js'></script>
         
         <!--################## CSS ################
         ############################################### -->
@@ -41,6 +50,7 @@
         <link rel = "stylesheet" href = "/css/leaflet/plugins/font-awesome.css" />
         <link rel = "stylesheet" href = "/css/leaflet/plugins/L.Control.Zoomslider.css" />
         <link rel = "stylesheet" href = "/css/CEST/popup.css" />
+        <link rel = "stylesheet" href = "css/info.css"/>
     </head>
     <body>
         <div class="wrapper">
@@ -49,12 +59,15 @@
             </div>
             <div class="content">
                 <div id="map"></div>
+                <div id="3dContainer" style="width:100%;height:100%;background-color:rgb(120,140,255);">
+                    <div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>
+                    <script type="text/javascript" src="js/CEST_3D/cest3d_applet.js"></script>
+                </div>
             </div>
         </div>
-        <script type = "text/javascript" src = "/js/CEST/applet.js"></script>
+        <script type = "text/javascript" src = "/js/CEST/cestMap_applet.js"></script>
         <script type = "text/javascript">
-            var cest = new CEST();
-            
+            var cest = new CEST({tileSource:'local'});
             socket.on('data', function(data){
                 cest.updateDevices(data);
             });

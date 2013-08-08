@@ -437,6 +437,7 @@
 	right: 0;
 	padding: 4px 4px 0 0;
 	text-align: center;
+    vertical-align: center;
 	width: 18px;
 	height: 14px;
 	font: 16px/14px Tahoma, Verdana, sans-serif;

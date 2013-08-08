@@ -111,6 +111,24 @@ CEST.prototype = {
             this.cest.map.on('popupopen', function() {
                 $( ".detail-popup-info" ).tabs();
             });
+            this.cest.visible = true;
+            
+            setInterval(function(){
+                if(this.cest.visible == true){
+                    //
+                    $('#map').css("display","none");
+                    $('#3dContainer').css("display", "block");
+                    console.log('made invisible');
+                    this.cest.visible = false;
+                } else { 
+                    //
+                    $('#map').css("display","block");
+                    $('#3dContainer').css("display", "none");
+                    console.log("made visible");
+                    this.cest.visible = true;
+                }
+            }, 5000);
+            
         });
     
     },

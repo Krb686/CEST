@@ -30,9 +30,21 @@ html, body {
     background: lightgray;
 }
 
+.content{
+    position:relative;
+}
+
 #map{
+    position:absolute;
     height:100%;
     width:100%;
+}
+
+#3dContainer{
+    position:absolute;
+    height:100%;
+    width:100%;
+    z-index:2;
 }
 
 
