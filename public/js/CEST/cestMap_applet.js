@@ -33,6 +33,7 @@ CEST.prototype = {
         this.tileSource = config.tileSource || 'remote';
         this.style = config.style || '998';
         this.devices = config.devices || [];
+        this.displayType = config.displayType || '2.5D';
         
         
         if(this.tileSource == 'local'){
@@ -105,6 +106,67 @@ CEST.prototype = {
                                 "<p>Info</p>" + 
                             "</div>" +
                         "</div>";
+                        
+        //GUI
+        this.gui = new dat.GUI();
+        
+        
+        parameters = 
+        {
+            a: 200, // numeric
+            b: 200, // numeric slider
+            c: "Hello, GUI!", // string
+            d: false, // boolean (checkbox)
+            e: "#ff8800", // color (hex)
+            f: function() { alert("Hello!") },
+            g: function() { alert( parameters.c ) },
+            v : 0,    // dummy value, only type is important
+            w: "...", // dummy value, only type is important
+            x: 50, y: 0, z: 0,
+            display:'2.5D',
+            material: "Texture"
+        };
+        
+        /*
+        // gui.add( parameters )
+        this.gui.add( parameters, 'a' ).name('Number');
+        this.gui.add( parameters, 'b' ).min(128).max(256).step(16).name('Slider');
+        this.gui.add( parameters, 'c' ).name('String');
+        this.gui.add( parameters, 'd' ).name('Boolean');
+        
+        this.gui.addColor( parameters, 'e' ).name('Color');
+        
+        var numberList = [1, 2, 3];
+        this.gui.add( parameters, 'v', numberList ).name('List');
+        
+        var stringList = ["One", "Two", "Three"];
+        this.gui.add( parameters, 'w', stringList ).name('List');
+        
+        this.gui.add( parameters, 'f' ).name('Say "Hello!"');
+        this.gui.add( parameters, 'g' ).name("Alert Message");
+        
+        
+        var folder1 = this.gui.addFolder('Coordinates');
+        folder1.add( parameters, 'x' );
+        folder1.add( parameters, 'y' );
+        */
+        
+        
+        var displayChanger = this.gui.add(parameters, 'display', ['2.5D', '3D']).name('Display Type').listen();
+        var that = this;
+        displayChanger.onChange(function(value){
+            that.changeDisplay(value);
+        });
+        
+        
+        var cubeMaterial = this.gui.add(parameters, 'material', [ "Texture", "Wireframe" ] ).name('Material Type').listen();
+        cubeMaterial.onChange(function(value){
+            console.log('hey');
+            updateBuilding();   
+        });
+        
+        //folder1.close();
+        this.gui.open();
         
         //Setup jquery event listener to make tabs for popups
         $(window).load(function() {
@@ -112,7 +174,7 @@ CEST.prototype = {
                 $( ".detail-popup-info" ).tabs();
             });
             this.cest.visible = true;
-            
+            /*
             setInterval(function(){
                 if(this.cest.visible == true){
                     //
@@ -128,7 +190,7 @@ CEST.prototype = {
                     this.cest.visible = true;
                 }
             }, 5000);
-            
+            */
         });
     
     },
@@ -205,9 +267,22 @@ CEST.prototype = {
             
             }
         } 
+    },
+    changeDisplay: function(value){
+        if(value != this.displayType){
+            if(value == '2.5D'){
+                //
+                $('#map').css("display","block");
+                $('#3dContainer').css("display", "none");
+                this.displayType = '2.5D';
+            } else if (value == '3D'){
+                //
+                $('#map').css("display","none");
+                $('#3dContainer').css("display", "block");
+                this.displayType = '3D';
+            }
+        }
     }
-    
-    
 }
 
 

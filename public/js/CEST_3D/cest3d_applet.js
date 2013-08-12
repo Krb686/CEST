@@ -473,7 +473,7 @@ function init()
     makeSprites();
     
     //GUI
-    makeGUI();
+    //makeGUI();
     
     
 	
