@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -8,18 +7,26 @@ var express     =   require('express')
   , path        =   require('path')
   , io          =   require('socket.io')
   , sys         =   require('sys')
-  , sqlite3      =   require('sqlite3').verbose();
+  , nedb        =   require('nedb');
 
+//GLOBALS
+var app, db;
 var users = [];
 var socketList = {};
-var db = new sqlite3.Database(__dirname + '/public/data/data.s3db');
 
-  
+
+function main(){
+    configureServer();
+    loadDatabase();
+    startServer();
+}
+
+
 function configureServer()
 {
     
     //Create app
-    var app = express();
+    app = express();
 
     app.configure(function(){
       app.set('port', process.env.PORT || 3001);
@@ -40,15 +47,20 @@ function configureServer()
     
     app.get('/', function(req, res){
         res.render('index.html');
-    });
-    
-    
-    
-    startServer(app);
-    
+    });  
 }
 
-function startServer(app)
+function loadDatabase(){
+    var opts = {
+        filename: 'public/data/database',
+        autoload: true
+    }
+    
+    db = new nedb(opts);
+  
+}
+
+function startServer()
 {
     var server = http.createServer(app);
     var port = app.get('port');
@@ -78,18 +90,18 @@ function connectSocket(socket){
     
     
     //default - send all data
-    var query = "select * from DEVICE";
-    queryDb(db, query, function(result){
-        //
-        socket.emit('data', result);
-    });
- 
-    
-    
-    socket.on('simulation', function(data){
-       console.log(data); 
+    db.find({}, function(err, docs){
+        if(err){
+            throw err;
+        }
+        
+        socket.emit('data', docs);
     });
 }
+
+main();
+
+/* Old code for use with sqlite3
 
 function queryDb(db, query, cb){
     var result = [];
@@ -108,6 +120,9 @@ function queryDb(db, query, cb){
         });
     });
 }
+
+
+
 
 function correctJson(object){
     //
@@ -141,5 +156,5 @@ function correctJson(object){
     
     return object;
 }
+*/
 
-configureServer();

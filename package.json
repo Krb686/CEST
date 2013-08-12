@@ -9,6 +9,7 @@
     "express": "3.0.4",
     "socket.io":"*",
     "ejs":"*",
-    "mkdirp":"*"
+    "mkdirp":"*",
+    "nedb":"*"
   }
 }

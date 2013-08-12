@@ -140,6 +140,8 @@ function download(object)
         numDownloaded++;
         console.log('Downloaded file ' + numDownloaded + '//' + total);
         response.pipe(object.fileStream);
+        
+        
       
         //If there are objects left, continue. Else, this is the last response.
         if(objects.length > 0){
@@ -147,8 +149,8 @@ function download(object)
             object = objects.shift();
             download(object);
         } else {
-                console.log("Finished downloading map files.");
-                process.exit(0);
+            console.log("Finished downloading map files.");
+            process.exit(0);
             
         }
     });

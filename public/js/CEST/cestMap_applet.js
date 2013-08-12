@@ -178,6 +178,8 @@ CEST.prototype = {
         //general purpose update
     },
     updateDevices: function(data){
+        var data = data[0].devices;
+        console.log(data);
         for(var i=0;i<data.length;i++){
             this.devices.push(data[i]);
         }

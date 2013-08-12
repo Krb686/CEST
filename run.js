@@ -139,9 +139,9 @@ function startApp()
 {
     console.log("Starting app...");
     if(platform == "win32"){
-        runCommandWindows(['/c', 'node', 'app.js']);
+        runCommandWindows(['/c', 'node', 'server.js'], function(){});
     } else if (platform == "linux"){
-        runCommandLinux([__dirname, 'node', 'app.js']);
+        runCommandLinux([__dirname, 'node', 'server.js'], function(){});
     } else {
         console.log("Platform: " + platform + " is not supported.");
     }
@@ -177,8 +177,5 @@ function runCommandLinux(options, exitFunction)
     
 
 }
-
-
-
 main();
 
