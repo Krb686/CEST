@@ -1,50 +1,67 @@
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
+html,body {
+	margin:0;
+	padding:0;
+	height:100%; /* needed for container min-height */
+	background:gray;
+	
+	font-family:arial,sans-serif;
+	font-size:small;
+	color:#666;
 }
+
 .wrapper {
-    display: table;
-    height: 100%;
-    width: 100%;
-    background: yellow;
+    position:relative; /* needed for footer positioning*/
+	margin:0 auto; /* center, not in IE5 */
+	width:750px;
+	background:#f0f0f0;
+	
+	height:100%;
+    width:100%;
+    overflow:hidden;
+
+}
+
 }
 .header {
-    display: table-row;
-    height:5%;
-    background-color: rgba(50,50,50,6);;
+    padding:1em;
+	background:#ddd url("../csslayout.gif") 98% 10px no-repeat;
+	border-bottom:6px double gray;
+    overflow:hidden;
     text-align:center;
 }
 .content {
-    display: table-row;  /* height is dynamic, and will expand... */
-    height: 100%;        /* ...as content is added (won't scroll) */
-    background: turquoise;
-    padding-right:10px;
-    margin-left:30px;
-    margin-right:30px;
-    border:10px;
+    height:100%;
+    width:100%;
+    overflow:hidden;
 }
 .footer {
-    display: table-row;
-    height:20px;
-    background: lightgray;
-}
-
-.content{
-    position:relative;
-}
-
-#map{
+    overflow:hidden;
     position:absolute;
-    height:100%;
+    bottom:0;
     width:100%;
+    
 }
 
-#3dContainer{
-    position:absolute;
-    height:100%;
+.logoImg{
+    display:block;
+    margin:auto;
+}
+
+
+#2dcontainer{
+    height:200px;
     width:100%;
     z-index:2;
+}
+
+#3dcontainer{
+    height:200px;
+    width:100%;
+    z-index:1;
+}
+
+.dg.ac{
+    z-index:1;
 }
 
 

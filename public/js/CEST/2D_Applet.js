@@ -33,7 +33,7 @@ CEST.prototype = {
         this.tileSource = config.tileSource || 'remote';
         this.style = config.style || '998';
         this.devices = config.devices || [];
-        this.displayType = config.displayType || '2.5D';
+        this.displayType = config.displayType || '2D';
         
         
         if(this.tileSource == 'local'){
@@ -152,7 +152,7 @@ CEST.prototype = {
         */
         
         
-        var displayChanger = this.gui.add(parameters, 'display', ['2.5D', '3D']).name('Display Type').listen();
+        var displayChanger = this.gui.add(parameters, 'display', ['2D', '3D']).name('Display Type').listen();
         var that = this;
         displayChanger.onChange(function(value){
             that.changeDisplay(value);
@@ -168,29 +168,18 @@ CEST.prototype = {
         //folder1.close();
         this.gui.open();
         
+        
         //Setup jquery event listener to make tabs for popups
         $(window).load(function() {
+            this.cest.changeDisplay('2D');
             this.cest.map.on('popupopen', function() {
                 $( ".detail-popup-info" ).tabs();
+                
             });
-            this.cest.visible = true;
-            /*
-            setInterval(function(){
-                if(this.cest.visible == true){
-                    //
-                    $('#map').css("display","none");
-                    $('#3dContainer').css("display", "block");
-                    console.log('made invisible');
-                    this.cest.visible = false;
-                } else { 
-                    //
-                    $('#map').css("display","block");
-                    $('#3dContainer').css("display", "none");
-                    console.log("made visible");
-                    this.cest.visible = true;
-                }
-            }, 5000);
-            */
+            
+            var that = this;
+            setInterval(function(){console.log(that.cest.map.getCenter());}, 1000);
+            
         });
     
     },
@@ -207,7 +196,7 @@ CEST.prototype = {
         
         //Coordinates control
         L.control.coordinates({
-            position:"bottomleft", //optional default "bottomright"
+            position:"bottomright", //optional default "bottomright"
             decimals:5, //optional default 4
             decimalSeperator:".", //optional default "."
             labelTemplateLat:"Latitude: {y}", //optional default "Lat: {y}"
@@ -270,15 +259,15 @@ CEST.prototype = {
     },
     changeDisplay: function(value){
         if(value != this.displayType){
-            if(value == '2.5D'){
+            if(value == '2D'){
                 //
-                $('#map').css("display","block");
-                $('#3dContainer').css("display", "none");
-                this.displayType = '2.5D';
+                $('#2dcontainer').css("display","block");
+                $('#3dcontainer').css("display", "none");
+                this.displayType = '2D';
             } else if (value == '3D'){
                 //
-                $('#map').css("display","none");
-                $('#3dContainer').css("display", "block");
+                $('#2dcontainer').css("display","none");
+                $('#3dcontainer').css("display", "block");
                 this.displayType = '3D';
             }
         }
