@@ -60,19 +60,27 @@
             <div class="content">
                 <div id="2dcontainer" style="height:100%;width:100%;">
                     <div id="map" style="height:94%;width:100%;"></div>
-                    <script type = "text/javascript" src = "/js/CEST/2D_Applet.js"></script>
                 </div>
                 <div id="3dcontainer" style="height:100%;width:100%;">
                     <div id="ThreeJS"></div>
-                    <script type="text/javascript" src="js/CEST/3D_Applet.js"></script>
                 </div>
             </div>
-            <div class="footer" style="height:20px;width:100%;background-color:rgb(240,50,50);"></div>
+            <div class="footer" style="height:20px;width:100%;"></div>
         </div>
+        <script type = "text/javascript" src = "/js/CEST/2D_Applet.js"></script>
+        <script type = "text/javascript" src = "/js/CEST/3D_Applet.js"></script>
+        <script type = "text/javascript" src = "/js/CEST/CEST.js"></script>
         <script type = "text/javascript">
-            var cest = new CEST({tileSource:'local'});
+            //config options
+            var opts_2D = {tileSource:'local'};
+            var opts_3D = {};
+        
+            //CEST applet object
+            var CEST = new CEST(opts_2D, opts_3D);
+            
+            //event listener for device updating after loading from database
             socket.on('data', function(data){
-                cest.updateDevices(data);
+                CEST.CEST_2D.updateDevices(data);
             });
        </script>
     </body>

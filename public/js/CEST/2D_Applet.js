@@ -1,4 +1,4 @@
-function CEST(config){
+function CEST_2D(config){
     
     //private var
     var _resources = {
@@ -25,15 +25,16 @@ function CEST(config){
     this.init(config);
 }
 
-CEST.prototype = {
+CEST_2D.prototype = {
     init: function(config){
+        //map
         this.map = new L.map('map').setView([38.83, -77.305], 15);
     
+        //config options
         config = config || {};
         this.tileSource = config.tileSource || 'remote';
         this.style = config.style || '998';
         this.devices = config.devices || [];
-        this.displayType = config.displayType || '2D';
         
         
         if(this.tileSource == 'local'){
@@ -107,80 +108,8 @@ CEST.prototype = {
                             "</div>" +
                         "</div>";
                         
-        //GUI
-        this.gui = new dat.GUI();
+       
         
-        
-        parameters = 
-        {
-            a: 200, // numeric
-            b: 200, // numeric slider
-            c: "Hello, GUI!", // string
-            d: false, // boolean (checkbox)
-            e: "#ff8800", // color (hex)
-            f: function() { alert("Hello!") },
-            g: function() { alert( parameters.c ) },
-            v : 0,    // dummy value, only type is important
-            w: "...", // dummy value, only type is important
-            x: 50, y: 0, z: 0,
-            display:'2.5D',
-            material: "Texture"
-        };
-        
-        /*
-        // gui.add( parameters )
-        this.gui.add( parameters, 'a' ).name('Number');
-        this.gui.add( parameters, 'b' ).min(128).max(256).step(16).name('Slider');
-        this.gui.add( parameters, 'c' ).name('String');
-        this.gui.add( parameters, 'd' ).name('Boolean');
-        
-        this.gui.addColor( parameters, 'e' ).name('Color');
-        
-        var numberList = [1, 2, 3];
-        this.gui.add( parameters, 'v', numberList ).name('List');
-        
-        var stringList = ["One", "Two", "Three"];
-        this.gui.add( parameters, 'w', stringList ).name('List');
-        
-        this.gui.add( parameters, 'f' ).name('Say "Hello!"');
-        this.gui.add( parameters, 'g' ).name("Alert Message");
-        
-        
-        var folder1 = this.gui.addFolder('Coordinates');
-        folder1.add( parameters, 'x' );
-        folder1.add( parameters, 'y' );
-        */
-        
-        
-        var displayChanger = this.gui.add(parameters, 'display', ['2D', '3D']).name('Display Type').listen();
-        var that = this;
-        displayChanger.onChange(function(value){
-            that.changeDisplay(value);
-        });
-        
-        
-        var cubeMaterial = this.gui.add(parameters, 'material', [ "Texture", "Wireframe" ] ).name('Material Type').listen();
-        cubeMaterial.onChange(function(value){
-            console.log('hey');
-            updateBuilding();   
-        });
-        
-        //folder1.close();
-        this.gui.open();
-        
-        
-        //Setup jquery event listener to make tabs for popups
-        $(window).load(function() {
-            this.cest.changeDisplay('2D');
-            this.cest.map.on('popupopen', function() {
-                $( ".detail-popup-info" ).tabs();
-                
-            });
-            
-            var that = this;
-            setInterval(function(){console.log(that.cest.map.getCenter());}, 1000);
-            
-        });
     
     },
     
@@ -214,19 +143,6 @@ CEST.prototype = {
         //leaflet-search
         var searchControl = new L.Control.Search({layer: featuresLayer, propertyName: "name", animateLocation:false, circleLocation:false});
         this.map.addControl(searchControl);
-        //this.sampleSearchControl();
-    },
-    sampleSearchControl: function(){
-        var data = buildingData;
-        var testLayer = L.geoJson();
-        var featuresLayer = new L.geoJson(data);
-        this.map.addLayer(featuresLayer);
-        var searchControl = new L.Control.Search({layer: featuresLayer, propertyName: 'name', circleLocation:false});
-        this.map.addControl( searchControl);
-    }, 
-    update : function(){
-        //
-        //general purpose update
     },
     updateDevices: function(data){
         var data = data[0].devices;
@@ -256,22 +172,8 @@ CEST.prototype = {
             
             }
         } 
-    },
-    changeDisplay: function(value){
-        if(value != this.displayType){
-            if(value == '2D'){
-                //
-                $('#2dcontainer').css("display","block");
-                $('#3dcontainer').css("display", "none");
-                this.displayType = '2D';
-            } else if (value == '3D'){
-                //
-                $('#2dcontainer').css("display","none");
-                $('#3dcontainer').css("display", "block");
-                this.displayType = '3D';
-            }
-        }
     }
+    
 }
 
 
