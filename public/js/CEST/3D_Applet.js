@@ -200,7 +200,7 @@ CEST_3D.prototype = {
                         setTimeout(function(){
                             var count = CEST.CEST_3D._loadedTextureCount;
                             if(count < 765){
-                                alert('Warning: Not all textures were loaded.  Check the map files to make sure all are present and are valid images.  Will attempt to continue.');
+                                alert('Warning: Only ' + count + ' textures out of 765 were loaded.  Check the map files to make sure all are present and are valid images.  Will attempt to continue.');
                                 var self = CEST.CEST_3D;
                                 self.animate(self);
                             }
