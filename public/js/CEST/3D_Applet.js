@@ -154,6 +154,7 @@ CEST_3D.prototype = {
         
         
         var STYLE = '998';
+        var textureLoadAttemptCount = 0;
 
         for(var i=0;i<layerCount;i++){
             //geometry - plane gets smaller with each increased zoom level
@@ -181,9 +182,9 @@ CEST_3D.prototype = {
                 var subArrayMeshes = [];
                 for(var k = 0;k<colCount;k++){
                     var fileUrl = 'mapfiles/' + STYLE + '/256/' + zoomLevel + '/' + (xOffset+j) + '/' + (yOffset+k) + '.png';
-                    //console.log(fileUrl);
                     
                     //create textures
+                    textureLoadAttemptCount++;
                     var texture = new THREE.ImageUtils.loadTexture(fileUrl, {}, function(){
                         //callback stuff
                         self._loadedTextureCount++;
@@ -191,8 +192,21 @@ CEST_3D.prototype = {
                         if(self._loadedTextureCount == 765){
                             self.animate(self);
                         }
-                        //console.log(loadedTextureCount);
                     })
+                    
+                    //Wait 3 seconds after the last load attempt, before trying to continue.
+                    if(textureLoadAttemptCount == 765){
+                        //
+                        setTimeout(function(){
+                            var count = CEST.CEST_3D._loadedTextureCount;
+                            if(count < 765){
+                                alert('Warning: Not all textures were loaded.  Check the map files to make sure all are present and are valid images.  Will attempt to continue.');
+                                var self = CEST.CEST_3D;
+                                self.animate(self);
+                            }
+                        }, 3000);
+                    }
+                    
                     subArrayTextures.push(texture);
                     
                     //create materials
